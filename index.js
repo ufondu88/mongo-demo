@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const posts = require('./routes/posts');
 const express = require('express');
+var cors = require('cors')
 const app = express();
 
 app.use(cors()) // Use this after the variable declaration
