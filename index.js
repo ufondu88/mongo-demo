@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const posts = require('./routes/posts');
+const users = require('./routes/users');
 const express = require('express');
 var cors = require('cors')
 const app = express();
@@ -7,6 +8,7 @@ const app = express();
 app.use(cors()) // Use this after the variable declaration
 app.use(express.json());
 app.use('/api/posts', posts);
+app.use('/api/users', users);
 
 const uri = "mongodb+srv://uzoufondu:&123Canon@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority";
 
