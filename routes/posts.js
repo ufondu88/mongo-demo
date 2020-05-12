@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const posts = await Post.find().sort('name');
+  const posts = await Post.find();
   res.send(posts);
 });
 
