@@ -3,18 +3,18 @@ const Joi = require('joi');
 const User = require('./user');
 
 const Post = mongoose.model('Posts', new mongoose.Schema({
-    author: { 
-        type: mongoose.Schema.Types.ObjectId, 
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true 
+        required: true
     },
-    likes: [ String ],
-    comments: [ String ],
+    likes: [String],
+    comments: [String],
     content: { type: String, required: true },
-    date: {type: Date, default: Date.now, required: true },
+    date: { type: Date, default: Date.now, required: true },
 }));
 
-function validatePost(post){
+function validatePost(post) {
     const schema = {
         author: Joi.string().required(),
         likes: Joi.array().items(Joi.string()),

@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 userSchema = new mongoose.Schema({
-    username: { 
-        type: String, 
+    username: {
+        type: String,
         required: true,
         minlength: 3,
         maxlength: 255,
-        unique: true 
+        unique: true
     },
     email: {
         type: String,
@@ -39,13 +39,13 @@ userSchema = new mongoose.Schema({
     isAdmin: Boolean
 });
 
-userSchema.methods.generateAuthToken = function(){
+userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
     return token;
 }
 const User = mongoose.model('Users', userSchema);
 
-function validateUser(user){
+function validateUser(user) {
     const schema = {
         username: Joi.string().min(3).max(255).required(),
         email: Joi.string().min(3).max(255).email().required(),
