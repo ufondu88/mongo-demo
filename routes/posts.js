@@ -1,17 +1,11 @@
-const { Post, validate } = require('../models/post');
-const User = require('../models/user');
-const auth = require('../middleware/auth');
+const {User} = require('../models/user'); 
+const {Post, validate} = require('../models/post'); 
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const posts = await Post.find();
-
-  posts.forEach(async post => {
-    const user = await User.findById(post.author).select('-password');
-
-    post.author = user.username;
-  });
+  const posts = await Post.find().sort('name').populate('author', 'username -_id');
   res.send(posts);
 });
 
@@ -23,8 +17,8 @@ router.get('/:id', async (req, res) => {
   res.send(post);
 });
 
-router.post('/', auth, async (req, res) => {
-  const { error } = validate(req.body);
+router.post('/', async (req, res) => {
+  const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
   let post = new Post({
@@ -37,8 +31,8 @@ router.post('/', auth, async (req, res) => {
   res.send(post);
 });
 
-router.put('/:id', auth, async (req, res) => {
-  const { error } = validate(req.body);
+router.put('/:id', async (req, res) => {
+  const { error } = validate(req.body); 
   if (error) return res.status(400).send(error.details[0].message);
 
   const post = await Post.findByIdAndUpdate(req.params.id,
@@ -53,7 +47,7 @@ router.put('/:id', auth, async (req, res) => {
   res.send(post);
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const post = await Post.findByIdAndRemove(req.params.id);
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
