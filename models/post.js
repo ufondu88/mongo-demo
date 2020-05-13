@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const User = require('./user');
 
 const Post = mongoose.model('Posts', new mongoose.Schema({
-    author: { type: String, required: true },
+    author: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User',
+        required: true 
+    },
     likes: [ String ],
     comments: [ String ],
     content: { type: String, required: true },
