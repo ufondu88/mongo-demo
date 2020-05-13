@@ -4,7 +4,6 @@ var cors = require('cors')
 const app = express();
 const config = require('config');
 
-
 const posts = require('./routes/posts');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
