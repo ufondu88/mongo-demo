@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const { User, validate } = require('../models/user');
+const { User, validate, addInitialFollower } = require('../models/user');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const express = require('express');
@@ -42,7 +42,8 @@ router.post('/', async (req, res) => {
     user = await user.save();
 
     const token = user.generateAuthToken();
-
+    addInitialFollower();
+    
     res.header('x-auth-token', token).send(_.pick(user, ['username', 'email', 'firstName', 'lastName']));
 });
 
@@ -63,16 +64,6 @@ router.put('/:id', auth, async (req, res) => {
 
     res.send(user);
 });
-
-//continue working on this!!!!!
-//update every document ion the collection
-router.put('/', async (req, res) => {
-
-
-    const result = await User.collection.updateMany(req.body);
-
-    res.send(result);
-})
 
 router.delete('/:id', [auth, admin], async (req, res) => {
     const user = await User.findByIdAndRemove(req.params.id);

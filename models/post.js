@@ -32,18 +32,31 @@ function validatePost(post) {
     return Joi.validate(post, schema);
 }
 
-// async function createPost(){
-//     const post = new Post({
-//         author: "5ebb2ea9163d3972c35ebf75",
-//         content: "Wooo! MEAN!!",
-//     })
+async function createPost(){
+    const post = new Post({
+        author: "5ebb2ea9163d3972c35ebf75",
+        content: "Wooo! MEAN!!",
+    })
 
-//     const result = await post.save();
-//     console.log(result);
+    const result = await post.save();
+    console.log(result);
 
-// }
+}
 
-// createPost();
+async function updatePost(){
+    Post.update(
+        {}, 
+        { 
+            likes : [],
+            dislikes : []
+        }, 
+        { multi: true },  (err, raw) => {
+        if (err) return handleError(err);
+        console.log('The raw response from Mongo was ', raw);
+      });
+}
+
+//updatePost();
 
 exports.Post = Post;
 exports.validate = validatePost
