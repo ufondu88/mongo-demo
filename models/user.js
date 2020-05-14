@@ -78,9 +78,9 @@ async function updateUser(){
       });
 }
 
-async function addInitialFollower(){
+async function addInitialFollower(id){
     User.update(
-        {}, 
+        { "_id" : id}, 
         { 
             following : ["5ebb2ea9163d3972c35ebf75"],
         }, 

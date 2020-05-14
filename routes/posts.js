@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const posts = await Post.find().sort('name').populate('author', 'username -_id');
+  const posts = await Post.find().sort('name').populate('author', 'username _id');
   res.send(posts);
 });
 
