@@ -12,7 +12,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password');
+    const user = await User.findById(req.params.id).select('-password');
 
     //if (!user) return res.status(404).send('The user with the given ID was not found.');
 
@@ -63,6 +63,16 @@ router.put('/:id', auth, async (req, res) => {
 
     res.send(user);
 });
+
+//continue working on this!!!!!
+//update every document ion the collection
+router.put('/', async (req, res) => {
+
+
+    const result = await User.collection.updateMany(req.body);
+
+    res.send(result);
+})
 
 router.delete('/:id', [auth, admin], async (req, res) => {
     const user = await User.findByIdAndRemove(req.params.id);

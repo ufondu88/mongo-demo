@@ -9,12 +9,13 @@ const User = require('./user');
 //         .catch(err => console.error('could not connect to MongoDB', err))
 
 const Post = mongoose.model('Posts', new mongoose.Schema({
-    author: { 
-        type: mongoose.Schema.Types.ObjectId, 
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
-        required: true 
+        required: true
     },
     likes: [String],
+    dislikes: [String],
     comments: [String],
     content: { type: String, required: true },
     date: { type: Date, default: Date.now, required: true },
@@ -26,7 +27,7 @@ function validatePost(post) {
         likes: Joi.array().items(Joi.string()),
         comments: Joi.array().items(Joi.string()),
         content: Joi.string().required(),
-        
+
     }
     return Joi.validate(post, schema);
 }
@@ -39,10 +40,10 @@ function validatePost(post) {
 
 //     const result = await post.save();
 //     console.log(result);
-    
+
 // }
 
 // createPost();
- 
+
 exports.Post = Post;
 exports.validate = validatePost

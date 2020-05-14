@@ -1,5 +1,5 @@
-const {User} = require('../models/user'); 
-const {Post, validate} = require('../models/post'); 
+const { User } = require('../models/user');
+const { Post, validate } = require('../models/post');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { error } = validate(req.body); 
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   let post = new Post({
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const { error } = validate(req.body); 
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const post = await Post.findByIdAndUpdate(req.params.id,

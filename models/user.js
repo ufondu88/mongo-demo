@@ -36,6 +36,14 @@ userSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 255
     },
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users',
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users',
+    }],
     isAdmin: Boolean
 });
 
@@ -51,7 +59,9 @@ function validateUser(user) {
         email: Joi.string().min(3).max(255).email().required(),
         password: Joi.string().min(3).max(255).required(),
         firstName: Joi.string().min(3).max(255).required(),
-        lastName: Joi.string().min(3).max(255).required()
+        lastName: Joi.string().min(3).max(255).required(),
+        followers: Joi.array().items(Joi.string()),
+        following: Joi.array().items(Joi.string()),
     }
     return Joi.validate(user, schema);
 }
