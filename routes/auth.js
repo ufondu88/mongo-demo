@@ -5,18 +5,23 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 
+//user login
 router.post('/', async (req, res) => {
+    //validate the incoming data
     const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).json(error.details[0].message);
 
+    //check if username is valid
     let user = await User.findOne({ username: req.body.username });
-    if (!user) return res.status(400).send('Invalid username or password');
+    if (!user) return res.status(400).json('Invalid username or password');
 
+    //check if password is valid
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid username or password');
+    if (!validPassword) return res.status(400).json('Invalid username or password');
 
-    const token = user.generateAuthToken()
-    res.send(token);
+    //generate and send JSON web token
+    const token = await user.generateAuthToken()
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'email', 'firstName', 'lastName']));
 });
 
 function validate(user) {

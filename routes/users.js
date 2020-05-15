@@ -11,12 +11,10 @@ router.get('/', auth, async (req, res) => {
     res.send(users);
 });
 
-router.get('/:id', async (req, res) => {
-    const user = await User.findById(req.params.id).select('-password');
+router.get('/me', auth, async (req, res) => {
+    const user = await User.findById(req.user._id).select('-password');
 
-    //if (!user) return res.status(404).send('The user with the given ID was not found.');
-
-    res.send(req);
+    res.send(user);
 });
 
 //register new user to the datanase
@@ -44,7 +42,8 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken();
     addInitialFollower(user._id);
 
-    res.header('x-auth-token', token).send(_.pick(user, ['username', 'email', 'firstName', 'lastName']));
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'email', 'firstName', 'lastName']));
+    // res.json(token);
 });
 
 router.put('/:id', auth, async (req, res) => {
