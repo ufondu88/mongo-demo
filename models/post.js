@@ -14,8 +14,14 @@ const Post = mongoose.model('Posts', new mongoose.Schema({
         ref: 'Users',
         required: true
     },
-    likes: [String],
-    dislikes: [String],
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    }],
+    dislikes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    }],
     comments: [String],
     content: { type: String, required: true },
     date: { type: Date, default: Date.now, required: true },
@@ -24,12 +30,9 @@ const Post = mongoose.model('Posts', new mongoose.Schema({
 function validatePost(post) {
     const schema = {
         author: Joi.string().required(),
-        likes: Joi.array().items(Joi.string()),
-        comments: Joi.array().items(Joi.string()),
-        content: Joi.string().required(),
-
+        content: Joi.string().required()
     }
-    return Joi.validate(post, schema);
+    return Joi.validate(post, schema, {allowUnknown: true});
 }
 
 async function createPost(){
