@@ -10,13 +10,13 @@ router.get('/', async (req, res) => {
   res.send(posts);
 });
 
-//get specific post by ID
-router.get('/:id', async (req, res) => {
-  const post = await Post.findById(req.params.id);
-
+//get posts by specific author
+router.get('/author', async (req, res) => {
+  const post = await Post.find(req.params);
+  
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
-  res.send(post);
+  res.json(post);
 });
 
 //create post
