@@ -36,6 +36,11 @@ userSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 255
     },
+    description: {
+        type: String,
+        minlength: 3,
+        maxlength: 100
+    },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
@@ -59,7 +64,8 @@ function validateUser(user) {
         email: Joi.string().min(3).max(255).email().required(),
         password: Joi.string().min(3).max(255).required(),
         firstName: Joi.string().min(3).max(255).required(),
-        lastName: Joi.string().min(3).max(255).required()
+        lastName: Joi.string().min(3).max(255).required(),
+        description: Joi.string().min(3).max(100),
     }
     return Joi.validate(user, schema);
 }
