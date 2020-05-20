@@ -25,13 +25,7 @@ router.post('/', async (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send('User already exists');
 
-    user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName
-    });
+    user = new User(req.body)
 
     //hash the user password
     const salt = await bcrypt.genSalt(10);
