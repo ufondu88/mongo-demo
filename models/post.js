@@ -22,7 +22,17 @@ const Post = mongoose.model('Posts', new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users'
     }],
-    comments: [String],
+    comments: [{
+        author: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Users'
+        },
+        comment:{
+            type: String,
+            minlength: 3
+        },
+    date: { type: Date, default: Date.now, required: true },
+    }],
     content: { type: String, required: true },
     date: { type: Date, default: Date.now, required: true },
 }));
@@ -50,8 +60,7 @@ async function updatePost(){
     Post.update(
         {}, 
         { 
-            likes : [],
-            dislikes : []
+            comments: []
         }, 
         { multi: true },  (err, raw) => {
         if (err) return handleError(err);
