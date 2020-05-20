@@ -71,7 +71,7 @@ function validateUser(user) {
 }
 
 async function updateUser(){
-    User.update(
+    User.updateMany(
         {}, 
         { 
             followers : [],
@@ -85,7 +85,7 @@ async function updateUser(){
 }
 
 async function addInitialFollower(id){
-    User.update(
+    User.updateMany(
         { "_id" : id}, 
         { 
             following : ["5ebb2ea9163d3972c35ebf75"],
