@@ -7,7 +7,7 @@ const router = express.Router();
 //get all posts
 router.get('/', async (req, res) => {
   const posts = await Post.find().sort('name').populate('author', 'username _id').populate('comments.author', 'username _id');
-  res.send(posts);
+  res.json(posts);
 });
 
 //get posts by specific author
