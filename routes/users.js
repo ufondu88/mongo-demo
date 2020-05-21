@@ -6,17 +6,20 @@ const admin = require('../middleware/admin');
 const express = require('express');
 const router = express.Router();
 
+//get all users
 router.get('/', auth, async (req, res) => {
     const users = await User.find().sort('username');
     res.json(users);
 });
 
+//get the currently logged in user
 router.get('/me', auth, async (req, res) => {
     const user = await User.findById(req.user._id).select('-password');
 
     res.json(user);
 });
 
+//get a specific user by username
 router.get('/user', auth, async (req, res) => {
     const user = await User.findOne({ username: req.query.username }).select('-password');
     if (!user) return res.status(400).json('User does not exist');
@@ -47,8 +50,8 @@ router.post('/', async (req, res) => {
     // res.json(token);
 });
 
+//update a specific user
 router.put('/:id', auth, async (req, res) => {
-
     const user = await User.findByIdAndUpdate(req.body._id,
         req.body, { new: true });
 
@@ -57,6 +60,7 @@ router.put('/:id', auth, async (req, res) => {
     res.json(user);
 });
 
+//delete a specific user from the database
 router.delete('/:id', [auth, admin], async (req, res) => {
     const user = await User.findByIdAndRemove(req.params.id);
 
