@@ -12,8 +12,8 @@ router.get('/', async (req, res) => {
 
 //get posts by specific author
 router.get('/author', async (req, res) => {
-  const post = await Post.find({author: req.query.author});
-  
+  const post = await Post.find({ author: req.query.author });
+
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
   res.send(post);
