@@ -8,11 +8,18 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
     const users = await User.find().sort('username');
-    res.send(users);
+    res.json(users);
 });
 
 router.get('/me', auth, async (req, res) => {
     const user = await User.findById(req.user._id).select('-password');
+
+    res.json(user);
+});
+
+router.get('/user', auth, async (req, res) => {
+    const user = await User.findOne({ username: req.query.username }).select('-password');
+    if (!user) return res.status(400).json('User does not exist');
 
     res.json(user);
 });
@@ -41,21 +48,13 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', auth, async (req, res) => {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
 
-    const user = await User.findByIdAndUpdate(req.params.id,
-        {
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
-        }, { new: true });
+    const user = await User.findByIdAndUpdate(req.body._id,
+        req.body, { new: true });
 
     if (!user) return res.status(404).send('The user with the given ID was not found.');
 
-    res.send(user);
+    res.json(user);
 });
 
 router.delete('/:id', [auth, admin], async (req, res) => {
