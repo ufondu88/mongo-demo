@@ -9,29 +9,13 @@ const User = require('./user');
 //         .catch(err => console.error('could not connect to MongoDB', err))
 
 const Post = mongoose.model('Posts', new mongoose.Schema({
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
-        required: true
-    },
-    likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
-    }],
-    dislikes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
-    }],
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users'}],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     comments: [{
-        author: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Users'
-        },
-        comment:{
-            type: String,
-            minlength: 3
-        },
-    date: { type: Date, default: Date.now, required: true },
+        author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+        comment:{ type: String, minlength: 3 },
+        date: { type: Date, default: Date.now, required: true },
     }],
     content: { type: String, required: true },
     date: { type: Date, default: Date.now, required: true },
@@ -53,7 +37,6 @@ async function createPost(){
 
     const result = await post.save();
     console.log(result);
-
 }
 
 async function updatePost(){

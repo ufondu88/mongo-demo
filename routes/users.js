@@ -19,6 +19,16 @@ router.get('/me', auth, async (req, res) => {
     res.json(user);
 });
 
+//update the currently logged in user
+router.put('/me', auth, async (req, res) => {
+    const user = await User.findByIdAndUpdate(req.body._id,
+        req.body, { new: true });
+
+    if (!user) return res.status(404).send('The user with the given ID was not found.');
+
+    res.json(user);
+});
+
 //get a specific user by username
 router.get('/user', auth, async (req, res) => {
     const user = await User.findOne({ username: req.query.username }).select('-password');

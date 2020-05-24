@@ -1,5 +1,6 @@
 const { User } = require('../models/user');
 const { Post, validate } = require('../models/post');
+const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
@@ -12,7 +13,7 @@ router.get('/', async (req, res) => {
 
 //get posts by specific author
 router.get('/author', async (req, res) => {
-  const post = await Post.find({ author: req.query.author });
+  const post = await Post.find({ author: req.query.author }).sort({ date: -1 });
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
@@ -20,18 +21,14 @@ router.get('/author', async (req, res) => {
 });
 
 //create post
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let post = new Post({
-    author: req.body.author,
-    content: req.body.content,
-    date: req.body.date
-  });
+  let post = new Post(req.body);
   post = await post.save();
 
-  res.send(post);
+  res.json(post);
 });
 
 //update post
