@@ -8,18 +8,21 @@ const User = require('./user');
 //         .then(() => console.log('connected to MongoDB database'))
 //         .catch(err => console.error('could not connect to MongoDB', err))
 
-const Post = mongoose.model('Posts', new mongoose.Schema({
+postSchema =  new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users'}],
     dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     comments: [{
         author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
-        comment:{ type: String, minlength: 3 },
+        comment: { type: String, minlength: 3 },
         date: { type: Date, default: Date.now, required: true },
     }],
     content: { type: String, required: true },
+    repost: { type: mongoose.Schema.Types.ObjectId, ref: 'Posts' },
     date: { type: Date, default: Date.now, required: true },
-}));
+})
+
+const Post = mongoose.model('Posts', postSchema);
 
 function validatePost(post) {
     const schema = {
@@ -42,16 +45,16 @@ async function createPost(){
 async function updatePost(){
     Post.update(
         {}, 
-        { 
-            comments: []
+        {  
+            repost: null 
         }, 
         { multi: true },  (err, raw) => {
-        if (err) return handleError(err);
+        if (err) console.log(err)
         console.log('The raw response from Mongo was ', raw);
       });
 }
 
 //updatePost();
-
+ 
 exports.Post = Post;
 exports.validate = validatePost

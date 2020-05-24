@@ -37,6 +37,14 @@ router.get('/user', auth, async (req, res) => {
     res.json(user);
 });
 
+//get a specific user by ID
+router.get('/id', auth, async (req, res) => {
+    const user = await User.findOne({ _id: req.query.id }).select('-password');
+    if (!user) return res.status(400).json('User does not exist');
+
+    res.json(user);
+});
+
 //register new user to the datanase
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
