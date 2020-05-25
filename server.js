@@ -6,13 +6,18 @@ const config = require('config');
 const http = require('http').createServer();
 const io = require('socket.io')(http);
 
-io.on('connection', (socket) => {
-    socket.emit('welcome', 'Connected to socket')
-})
+// io.on('connection', (socket) => {
+//     socket.emit('welcome', 'Connected to socket')
+// })
 
+io.of('/messages').on('connection', (socket) => {
+    socket.emit('welcome', 'Hello and welcome to the chat area')
+})
 
 const posts = require('./routes/posts');
 const users = require('./routes/users');
+const chatrooms = require('./routes/chatrooms');
+const messages = require('./routes/messages');
 const auth = require('./routes/auth');
 
 if(!config.get('jwtPrivateKey')){
@@ -24,6 +29,8 @@ app.use(cors()) // Use this after the variable declaration
 app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/posts', posts);
+app.use('/api/chatrooms', chatrooms);
+app.use('/api/messages', messages);
 app.use('/api/auth', auth);
 
 const uri = "mongodb+srv://uzoufondu:&123Canon@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority";
