@@ -3,6 +3,13 @@ const express = require('express');
 var cors = require('cors')
 const app = express();
 const config = require('config');
+const http = require('http').createServer();
+const io = require('socket.io')(http);
+
+io.on('connection', (socket) => {
+    socket.emit('welcome', 'Connected to socket')
+})
+
 
 const posts = require('./routes/posts');
 const users = require('./routes/users');
@@ -27,4 +34,5 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
+http.listen(4000, () => console.log(`ssocket listening on port 4000...`))
 

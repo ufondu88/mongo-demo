@@ -49,6 +49,11 @@ userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Users',
     }],
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Posts',
+    }],
+    
     isAdmin: Boolean
 });
 
