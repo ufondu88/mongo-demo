@@ -21,15 +21,12 @@ router.get('/:user', auth, async (req, res) => {
 
 //get private chatroom
 router.get('/:user/:otherUser', auth, async (req, res) => {
-    //find the chatroom that contains just two members and the members are the user and otherUser
+    //find the chatroom that contains just two members and the members are the user and otherUser    
     const chatroom = await Chatroom.find({ 
-        members: { 
-            $elemMatch: { 
-                $size: 2, 
-                $all: [req.params.user, req.params.otherUser] 
-            } 
+        members: { $size: 2 }, 
+        members: { $all: [req.params.user, req.params.otherUser] }
         } 
-    })
+    )
 
     res.json(chatroom);
 });
