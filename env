@@ -1,0 +1,1 @@
+database = "mongodb+srv://uzoufondu:password@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority";

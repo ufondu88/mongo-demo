@@ -1,7 +1,5 @@
-const { User } = require('../models/user');
 const { Post, validate } = require('../models/post');
 const auth = require('../middleware/auth');
-const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
