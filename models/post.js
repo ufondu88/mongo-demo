@@ -17,7 +17,7 @@ postSchema =  new mongoose.Schema({
         date: { type: Date, default: Date.now, required: true },
     }],
     content: { type: String, required: true },
-    repost: { type: mongoose.Schema.Types.ObjectId, ref: 'Posts' },
+    repost: { type: mongoose.Schema.Types.ObjectId, ref: 'Posts', default: null },
     date: { type: Date, default: Date.now, required: true },
 })
 
