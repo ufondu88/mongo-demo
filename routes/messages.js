@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
 
 //get messages for chatroom
 router.get('/:chatroom', auth,  async (req, res) => {
-  const messages = await Message.find({ chatroom: req.params.chatroom });
+  const messages = await Message.find({ chatroom: req.params.chatroom })
+                                .populate('sender', 'username _id');
 
   res.json(messages); 
 });
