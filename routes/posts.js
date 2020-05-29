@@ -22,6 +22,15 @@ router.get('/author', async (req, res) => {
   res.send(post);
 });
 
+//get posts by ID
+router.get('/:id', async (req, res) => {
+  const post = await Post.find({ _id: req.params.id }).sort({ date: -1 });
+
+  if (!post) return res.status(404).send('The post with the given ID was not found.');
+
+  res.send(post);
+});
+
 //create post
 router.post('/', auth, async (req, res) => {
   const { error } = validate(req.body);
@@ -35,7 +44,7 @@ router.post('/', auth, async (req, res) => {
 
 //update post
 router.put('/:id', async (req, res) => {
-  req.body.author = req.body.author._id
+  if (req.body.author._id) req.body.author = req.body.author._id
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 

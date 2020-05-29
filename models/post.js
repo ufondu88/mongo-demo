@@ -19,6 +19,10 @@ postSchema =  new mongoose.Schema({
     content: { type: String, required: true },
     repost: { type: mongoose.Schema.Types.ObjectId, ref: 'Posts', default: null },
     date: { type: Date, default: Date.now, required: true },
+    repostedBy: [{
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+        date: { type: Date, default: Date.now, required: true }
+    }]
 })
 
 const Post = mongoose.model('Posts', postSchema);
@@ -45,7 +49,7 @@ async function updatePost(){
     Post.update(
         {}, 
         {  
-            repost: null 
+            repostedBy: [] 
         }, 
         { multi: true },  (err, raw) => {
         if (err) console.log(err)
