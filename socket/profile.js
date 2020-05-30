@@ -24,11 +24,10 @@ function openPostConnection(){
     .of('/posts')
     .on('connection', (socket) => {
         socket.on('joinRoom', (data) => {
-            console.log(data)
-            if (users.includes(JSON.stringify(data.post.author))) {
+            if (users.includes(JSON.stringify(data.post.author._id))) {
                 socket.emit('newPost', data)
             } else {
-                return socket.emit('error', `${data.post.author} does not exist`)
+                return socket.emit('error', `${data.message.chatroom} does not exist`)
             }
         })
     })
