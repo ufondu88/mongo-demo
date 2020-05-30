@@ -10,21 +10,43 @@ router.get('/', async (req, res) => {
         .populate('author', 'username _id')
         .populate('repost', 'author content date')
         .populate('comments.author', 'username _id');
+    console.log(posts)
   res.json(posts);
 });
 
 //get posts by specific author
 router.get('/author', async (req, res) => {
-  const post = await Post.find({ author: req.query.author }).sort({ date: -1 });
+  const post = await Post.find({ author: req.query.author })
+  .sort({ date: -1 })
+  .populate('author', 'username _id')
+  .populate('repost', 'author content date')
+  .populate('comments.author', 'username _id');
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
   res.send(post);
 });
 
+//get posts by followed authors
+router.get('/followed', async (req, res) => {
+  const posts = await Post.find({ author: { $in: req.query.following } })
+  .sort({ date: -1 })
+  .populate('author', 'username _id')
+  .populate('repost', 'author content date')
+  .populate('comments.author', 'username _id');
+
+  if (!posts) return res.status(404).send('The post with the given ID was not found.');
+
+  res.send(posts);
+});
+
 //get posts by ID
 router.get('/:id', async (req, res) => {
-  const post = await Post.find({ _id: req.params.id }).sort({ date: -1 });
+  const post = await Post.find({ _id: req.params.id })
+      .sort({ date: -1 })
+      .populate('author', 'username _id')
+      .populate('repost', 'author content date')
+      .populate('comments.author', 'username _id');
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
