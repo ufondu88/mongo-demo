@@ -1,4 +1,5 @@
-const { io, http } = require('./socket/socket.js');
+require('./socket/chatroom.js');
+require('./socket/profile.js');
 const mongoose = require('mongoose');
 const express = require('express');
 var cors = require('cors')

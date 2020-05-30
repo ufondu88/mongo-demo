@@ -4,55 +4,16 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 
 userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 255,
-        unique: true
-    },
-    email: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 255,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 1024
-    },
-    firstName: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 255
-    },
-    lastName: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 255
-    },
-    description: {
-        type: String,
-        minlength: 3,
-        maxlength: 100
-    },
-    followers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
-    }],
-    following: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
-    }],
-    favorites: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Posts',
-    }],
+    username: { type: String, required: true, minlength: 3, maxlength: 255, unique: true },
+    email: { type: String, required: true, minlength: 3, maxlength: 255, unique: true },
+    password: { type: String, required: true, minlength: 3, maxlength: 1024 },
+    firstName: { type: String, required: true, minlength: 3, maxlength: 255 },
+    lastName: { type: String, required: true, minlength: 3, maxlength: 255 },
+    description: { type: String, minlength: 3, maxlength: 100 },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Posts' }],
+    chatrooms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chatrooms' }],
     
     isAdmin: Boolean
 });
