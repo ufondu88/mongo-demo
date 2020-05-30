@@ -5,6 +5,17 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/')
+    },
+    filename: (req, file, callback) => {
+        callback(null, req.user._id)
+    }
+})
+const upload = multer({ storage: storage })
 
 //get all users
 router.get('/', auth, async (req, res) => {
@@ -69,13 +80,26 @@ router.post('/', async (req, res) => {
 });
 
 //update a specific user
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
+    console.log(req.file)
     const user = await User.findByIdAndUpdate(req.body._id,
         req.body, { new: true });
 
     if (!user) return res.status(404).send('The user with the given ID was not found.');
 
     res.json(user);
+});
+
+//update a specific user
+router.post('/profile-picture', auth, upload.single('profilePicture'), async (req, res) => {
+    console.log(req.file)
+
+    // const user = await User.findByIdAndUpdate(req.body._id,
+    //     req.body, { new: true });
+
+    // if (!user) return res.status(404).send('The user with the given ID was not found.');
+
+    // res.json(user);
 });
 
 //delete a specific user from the database
