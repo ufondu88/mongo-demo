@@ -19,6 +19,7 @@ if (!config.get('jwtPrivateKey')) {
 
 app.use(cors()) // Use this after the variable declaration
 app.use(express.json());
+app.use(express.static('uploads'));
 app.use('/api/users', users);
 app.use('/api/posts', posts);
 app.use('/api/chatrooms', chatrooms);

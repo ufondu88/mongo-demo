@@ -9,10 +9,10 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, 'uploads/')
+        callback(null, 'uploads')
     },
     filename: (req, file, callback) => {
-        callback(null, req.user._id)
+        callback(null, `${req.user._id}.jpeg`)
     }
 })
 const upload = multer({ storage: storage })
@@ -92,14 +92,12 @@ router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
 
 //update a specific user
 router.post('/profile-picture', auth, upload.single('profilePicture'), async (req, res) => {
-    console.log(req.file)
+    const file = req.file
+    console.log(file)
 
-    // const user = await User.findByIdAndUpdate(req.body._id,
-    //     req.body, { new: true });
+    if (!file) return res.status(404).send('There was no picture attached');
 
-    // if (!user) return res.status(404).send('The user with the given ID was not found.');
-
-    // res.json(user);
+    res.json(file);
 });
 
 //delete a specific user from the database
