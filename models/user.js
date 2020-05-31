@@ -10,11 +10,12 @@ userSchema = new mongoose.Schema({
     firstName: { type: String, required: true, minlength: 3, maxlength: 255 },
     lastName: { type: String, required: true, minlength: 3, maxlength: 255 },
     description: { type: String, minlength: 3, maxlength: 100 },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Posts' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Posts' }],
     chatrooms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chatrooms' }],
-    
+    profilePicture: { type: String, required: true, default: 'default.jpeg' },
     isAdmin: Boolean
 });
 
@@ -38,11 +39,9 @@ function validateUser(user) {
 
 async function updateUser(){
     User.updateMany(
-        {}, 
+        { profilePicture: null }, 
         { 
-            followers : [],
-            following : [],
-            isAdmin: false
+            profilePicture: 'default.jpeg'
         }, 
         { multi: true },  (err, raw) => {
         if (err) return handleError(err);
@@ -62,6 +61,7 @@ async function addInitialFollower(id){
       });
 }
 
+//updateUser()
 
 exports.User = User;
 exports.validate = validateUser
