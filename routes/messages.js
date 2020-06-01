@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const messages = await Message.find()
         .sort('date')
-        .populate('members', 'username _id')
+        .populate('members', '-password')
         .populate('messages', 'sender message message')
   res.json(messages);
 });
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 //get messages for chatroom
 router.get('/:chatroom', auth,  async (req, res) => {
   const messages = await Message.find({ chatroom: req.params.chatroom })
-                                .populate('sender', 'username _id');
+                                .populate('sender', '-password');
 
   res.json(messages); 
 });

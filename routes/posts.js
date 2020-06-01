@@ -7,9 +7,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const posts = await Post.find()
         .sort('name')
-        .populate('author', 'username _id')
+        .populate('author', '-password')
         .populate('repost', 'author content date')
-        .populate('comments.author', 'username _id');
+        .populate('comments.author', '-password');
     console.log(posts)
   res.json(posts);
 });
@@ -18,9 +18,9 @@ router.get('/', async (req, res) => {
 router.get('/author', async (req, res) => {
   const post = await Post.find({ author: req.query.author })
   .sort({ date: -1 })
-  .populate('author', 'username _id')
+  .populate('author', '-password')
   .populate('repost', 'author content date')
-  .populate('comments.author', 'username _id');
+  .populate('comments.author', '-password');
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
@@ -31,9 +31,22 @@ router.get('/author', async (req, res) => {
 router.get('/followed', async (req, res) => {
   const posts = await Post.find({ author: { $in: req.query.following } })
   .sort({ date: -1 })
-  .populate('author', 'username _id')
+  .populate('author', '-password')
   .populate('repost', 'author content date')
-  .populate('comments.author', 'username _id');
+  .populate('comments.author', '-password');
+
+  if (!posts) return res.status(404).send('The post with the given ID was not found.');
+
+  res.send(posts);
+});
+
+//get all favorite posts
+router.get('/favorites', async (req, res) => {
+  const posts = await Post.find({ _id: { $in: req.query.favorites } })
+  .sort({ date: -1 })
+  .populate('author', '-password')
+  .populate('repost', 'author content date')
+  .populate('comments.author', '-password');
 
   if (!posts) return res.status(404).send('The post with the given ID was not found.');
 
@@ -44,9 +57,9 @@ router.get('/followed', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const post = await Post.find({ _id: req.params.id })
       .sort({ date: -1 })
-      .populate('author', 'username _id')
+      .populate('author', '-password')
       .populate('repost', 'author content date')
-      .populate('comments.author', 'username _id');
+      .populate('comments.author', '-password');
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 

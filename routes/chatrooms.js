@@ -5,28 +5,38 @@ const router = express.Router();
 
 //get all chatrooms
 router.get('/', async (req, res) => {
-    const chatrooms = await Chatroom.find()
+    const chatrooms = await Chatroom
+        .find()
         .sort('date')
-        .populate('members', 'username _id')
-        .populate('messages', 'sender chatroom message')
+        .populate('members', '-password')
+        .populate('messages', 'sender chatroom message date')
     res.json(chatrooms);
 });
 
-//get chatrooms by specific user
-router.get('/:id', auth, async (req, res) => {
-    const chatrooms = await Chatroom.find({ _id: req.params.id }).sort({ date: -1 });
+//get chatrooms by user
+router.get('/user', auth, async (req, res) => {
+    const chatrooms = await Chatroom
+        .find({ members: req.query.userID })
+        .populate('members', '-password')
+        .populate('messages', 'sender chatroom message date')
 
     res.json(chatrooms);
+});
+
+//get specific chatroom by id
+router.get('/:id', auth, async (req, res) => {
+    const chatroom = await Chatroom.find({ _id: req.params.id }).sort({ date: -1 });
+
+    res.json(chatroom);
 });
 
 //get private chatroom
 router.get('/:user/:otherUser', auth, async (req, res) => {
     //find the chatroom that contains just two members and the members are the user and otherUser    
-    const chatroom = await Chatroom.find({ 
-        members: { $size: 2 }, 
+    const chatroom = await Chatroom.find({
+        members: { $size: 2 },
         members: { $all: [req.params.user, req.params.otherUser] }
-        } 
-    )
+    })
 
     res.json(chatroom);
 });
@@ -46,7 +56,7 @@ router.post('/', auth, async (req, res) => {
 router.put('/:id', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    
+
     const chatroom = await Chatroom.findByIdAndUpdate(req.params.id,
         req.body, { new: true });
 

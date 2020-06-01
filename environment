@@ -1,0 +1,5 @@
+Windows
+set synapse_jwtPrivateKey=mySecureKey
+
+Mac
+export synapse_jwtPrivateKey=mySecureKey
