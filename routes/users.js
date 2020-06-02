@@ -81,7 +81,6 @@ router.post('/', async (req, res) => {
 
 //update a specific user
 router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
-    console.log(req.file)
     const user = await User.findByIdAndUpdate(req.body._id,
         req.body, { new: true });
 
@@ -93,7 +92,6 @@ router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
 //update a specific user
 router.post('/profile-picture', auth, upload.single('profilePicture'), async (req, res) => {
     const file = req.file
-    console.log(file)
 
     if (!file) return res.status(404).send('There was no picture attached');
 

@@ -39,9 +39,9 @@ function validateUser(user) {
 
 async function updateUser(){
     User.updateMany(
-        { profilePicture: null }, 
+        { profilePicture: 'default.jpeg' }, 
         { 
-            profilePicture: 'default.jpeg'
+            profilePicture: `${User.username[0]}.png`
         }, 
         { multi: true },  (err, raw) => {
         if (err) return handleError(err);

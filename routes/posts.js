@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
         .populate('author', '-password')
         .populate('repost', 'author content date')
         .populate('comments.author', '-password');
-    console.log(posts)
   res.json(posts);
 });
 
