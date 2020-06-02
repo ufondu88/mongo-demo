@@ -1,30 +1,28 @@
 const { User } = require('../models/user');
 const { io } = require('./socket.js');
 
-let users = []
+var users = []
 
 function start(){
     getUsers()
 
-    openSocket()
 }
 
-async function getUsers() {
-    return await User.find().then(res => {
-        res.forEach(user => users.push(JSON.stringify(user._id)));
+async function getUsers() { 
+    await User.find().select('_id')
+    .then(res => {
+        users.push(...res)
+        openPostConnection()
     })
 }
 
-function openSocket(){
-    openPostConnection()
-}
-
 function openPostConnection(){
-    io
+    io 
     .of('/posts')
     .on('connection', (socket) => {
         socket.on('joinRoom', (data) => {
             if (users.includes(JSON.stringify(data.post.author._id))) {
+                console.log(data.post)
                 socket.emit('newPost', data)
             } else {
                 return socket.emit('error', `${data.message.chatroom} does not exist`)
