@@ -12,8 +12,8 @@ module.exports = {
       repo : 'GIT_REPOSITORY',
       path : 'DESTINATION_PATH',
       'pre-deploy-local': '',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
-      'pre-setup': 'export synapse_jwtPrivateKey=mySecureKey'
+      'post-deploy' : 'export synapse_jwtPrivateKey=mySecureKey && npm install && pm2 reload ecosystem.config.js --env production',
+      'pre-setup': ''
     }
   }
 };
