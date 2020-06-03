@@ -5,11 +5,11 @@ var users = []
 
 function start(){
     getUsers()
-
 }
 
 async function getUsers() { 
-    await User.find().select('_id')
+    await User.find()
+    .select('_id')
     .then(res => {
         users.push(...res)
         openPostConnection()
@@ -21,6 +21,9 @@ function openPostConnection(){
     .of('/posts')
     .on('connection', (socket) => {
         socket.on('joinRoom', (data) => {
+            if (users.filter(res => res._id == data.post.author._id)) return socket.emit(data.post.author._id, data)
+            return socket.emit('error', `${data.post.author._id} does not exist`)
+
             if (users.includes(JSON.stringify(data.post.author._id))) {
                 console.log(data.post)
                 socket.emit('newPost', data)
