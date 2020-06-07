@@ -61,8 +61,21 @@ async function addInitialFollower(id){
       });
 }
 
+async function updatePrimeFollowers(id){
+    User.update(
+        { "_id" : "5ebb2ea9163d3972c35ebf75"}, 
+        { 
+            $push: {followers : id},
+        }, 
+        (err, raw) => {
+        if (err) return handleError(err);
+        console.log('The raw response from Mongo was ', raw);
+      });
+}
+
 //updateUser()
 
 exports.User = User;
 exports.validate = validateUser
 exports.addInitialFollower = addInitialFollower
+exports.updatePrimeFollowers = updatePrimeFollowers

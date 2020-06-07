@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const { User, validate, addInitialFollower } = require('../models/user');
+const { User, validate, addInitialFollower, updatePrimeFollowers } = require('../models/user');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const express = require('express');
@@ -91,6 +91,7 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
     addInitialFollower(user._id);
+    updatePrimeFollowers(user._id);
 
     res.header('x-auth-token', token).json(_.pick(user, ['_id', 'username', 'email', 'firstName', 'lastName']));
     // res.json(token);
