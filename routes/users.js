@@ -19,38 +19,55 @@ const upload = multer({ storage: storage })
 
 //get all users
 router.get('/', auth, async (req, res) => {
-    const users = await User.find().sort('username');
+    const users = await User.find()
+                            .sort('username')
+                            .populate('followers', '-password')
+                            .populate('following', '-password')
+                            .populate('favorites')
+                            .populate('chatrooms')
+                            .populate('posts')
+                            
     res.json(users);
 });
 
 //get the currently logged in user
 router.get('/me', auth, async (req, res) => {
-    const user = await User.findById(req.user._id).select('-password');
-
-    res.json(user);
-});
-
-//update the currently logged in user
-router.put('/me', auth, async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.body._id,
-        req.body, { new: true });
-
-    if (!user) return res.status(404).send('The user with the given ID was not found.');
+    const user = await User.findById(req.user._id)
+                            .select('-password')
+                            .populate('followers', '-password')
+                            .populate('following', '-password')
+                            .populate('favorites')
+                            .populate('chatrooms')
+                            .populate('posts')
 
     res.json(user);
 });
 
 //get a specific user by username
 router.get('/user', auth, async (req, res) => {
-    const user = await User.findOne({ username: req.query.username }).select('-password');
-    if (!user) return res.status(400).json('User does not exist');
+    const user = await User.findOne({ username: req.query.username })
+                            .select('-password')
+                            .populate('followers', '-password')
+                            .populate('following', '-password')
+                            .populate('favorites')
+                            .populate('chatrooms')
+                            .populate('posts')
+
+    if (!user) return res.status(400).json('User does not exist')
 
     res.json(user);
 });
 
 //get a specific user by ID
 router.get('/id', auth, async (req, res) => {
-    const user = await User.findOne({ _id: req.query.id }).select('-password');
+    const user = await User.findOne({ _id: req.query.id })
+                            .select('-password')
+                            .populate('followers', '-password')
+                            .populate('following', '-password')
+                            .populate('favorites')
+                            .populate('chatrooms')
+                            .populate('posts')
+
     if (!user) return res.status(400).json('User does not exist');
 
     res.json(user);
@@ -79,6 +96,16 @@ router.post('/', async (req, res) => {
     // res.json(token);
 });
 
+//update the currently logged in user
+router.put('/me', auth, async (req, res) => {
+    const user = await User.findByIdAndUpdate(req.body._id,
+        req.body, { new: true });
+
+    if (!user) return res.status(404).send('The user with the given ID was not found.');
+
+    res.json(user);
+});
+
 //update a specific user
 router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
     const user = await User.findByIdAndUpdate(req.body._id,
@@ -90,7 +117,7 @@ router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
 });
 
 //update a specific user
-router.post('/profile-picture', auth, upload.single('profilePicture'), async (req, res) => {
+router.put('/profile-picture', auth, upload.single('profilePicture'), async (req, res) => {
     const file = req.file
 
     if (!file) return res.status(404).send('There was no picture attached');
