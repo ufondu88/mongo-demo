@@ -92,7 +92,7 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken();
     addInitialFollower(user._id);
 
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'email', 'firstName', 'lastName']));
+    res.header('x-auth-token', token).json(_.pick(user, ['_id', 'username', 'email', 'firstName', 'lastName']));
     // res.json(token);
 });
 
