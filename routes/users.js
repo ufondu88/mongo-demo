@@ -26,7 +26,7 @@ router.get('/', auth, async (req, res) => {
                             .populate('favorites')
                             .populate('chatrooms')
                             .populate('posts')
-                            
+
     res.json(users);
 });
 
@@ -66,7 +66,7 @@ router.get('/id', auth, async (req, res) => {
                             .populate('following', '-password')
                             .populate('favorites')
                             .populate('chatrooms')
-                            .populate('posts')
+                            .populate('posts') 
 
     if (!user) return res.status(400).json('User does not exist');
 
