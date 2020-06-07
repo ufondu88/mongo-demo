@@ -73,6 +73,16 @@ async function updatePrimeFollowers(id){
       });
 }
 
+async function getNonFollowers(){
+    primeID = "5ebb2ea9163d3972c35ebf75"
+    primeFollowers = await User.findById(primeID).select("followers")
+    users = await User.find().select('_id') 
+
+    users.forEach(user => {
+        if(!primeFollowers.followers.includes(user._id) && user._id != primeID) updatePrimeFollowers(user._id)
+    });
+}
+
 //updateUser()
 
 exports.User = User;

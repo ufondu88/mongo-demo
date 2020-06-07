@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const { User, validate, addInitialFollower, updatePrimeFollowers } = require('../models/user');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
@@ -20,6 +20,7 @@ const upload = multer({ storage: storage })
 //get all users
 router.get('/', auth, async (req, res) => {
     const users = await User.find()
+                            .select('-password')
                             .sort('username')
                             .populate('followers', '-password')
                             .populate('following', '-password')
@@ -109,6 +110,7 @@ router.put('/me', auth, async (req, res) => {
 
 //update a specific user
 router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
+    console.log(req.body)
     const user = await User.findByIdAndUpdate(req.body._id,
         req.body, { new: true });
 
