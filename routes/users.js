@@ -110,7 +110,6 @@ router.put('/me', auth, async (req, res) => {
 
 //update a specific user
 router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
-    console.log(req.body)
     const user = await User.findByIdAndUpdate(req.body._id,
         req.body, { new: true });
 
