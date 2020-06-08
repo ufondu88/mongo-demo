@@ -34,6 +34,7 @@ router.get('/followed', async (req, res) => {
   .populate('repost', 'author content date')
   .populate('comments')
 
+  console.log(posts)
   if (!posts) return res.status(404).send('The post with the given ID was not found.');
 
   res.send(posts);
