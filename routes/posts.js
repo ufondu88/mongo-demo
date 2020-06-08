@@ -9,9 +9,7 @@ router.get('/', async (req, res) => {
         .sort('name')
         .populate('author', '-password')
         .populate('repost', 'author content date')
-        .populate('comments.author', '-password')
-        .populate('comments.likes', '-password')
-        .populate('comments.dislikes', '-password')
+        .populate('comments')
   res.json(posts);
 });
 
@@ -21,9 +19,7 @@ router.get('/author', async (req, res) => {
   .sort({ date: -1 })
   .populate('author', '-password')
   .populate('repost', 'author content date')
-  .populate('comments.author', '-password')
-  .populate('comments.likes', '-password')
-  .populate('comments.dislikes', '-password')
+  .populate('comments')
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 
@@ -36,9 +32,7 @@ router.get('/followed', async (req, res) => {
   .sort({ date: -1 })
   .populate('author', '-password')
   .populate('repost', 'author content date')
-  .populate('comments.author', '-password')
-  .populate('comments.likes', '-password')
-  .populate('comments.dislikes', '-password')
+  .populate('comments')
 
   if (!posts) return res.status(404).send('The post with the given ID was not found.');
 
@@ -51,9 +45,7 @@ router.get('/favorites', async (req, res) => {
   .sort({ date: -1 })
   .populate('author', '-password')
   .populate('repost', 'author content date')
-  .populate('comments.author', '-password')
-  .populate('comments.likes', '-password')
-  .populate('comments.dislikes', '-password')
+  .populate('comments')
 
   if (!posts) return res.status(404).send('The post with the given ID was not found.');
 
@@ -66,9 +58,7 @@ router.get('/:id', async (req, res) => {
       .sort({ date: -1 })
       .populate('author', '-password')
       .populate('repost', 'author content date')
-      .populate('comments.author', '-password')
-      .populate('comments.likes', '-password')
-      .populate('comments.dislikes', '-password')
+      .populate('comments')
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 

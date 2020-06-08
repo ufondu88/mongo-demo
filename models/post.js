@@ -5,13 +5,7 @@ postSchema =  new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
-    comments: [{
-        author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
-        comment: { type: String, minlength: 3 },
-        likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users'}],
-        dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
-        date: { type: Date, default: Date.now, required: true },
-    }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }],
     content: { type: String, required: true },
     repost: { type: mongoose.Schema.Types.ObjectId, ref: 'Posts', default: null },
     date: { type: Date, default: Date.now, required: true },
@@ -52,7 +46,12 @@ async function updatePost(){
       });
 }
 
-//updatePost();
+async function getComments(){
+    comments = await Post.find().select('comments')
+    console.log(comments)
+}
+
+//getComments();
  
 exports.Post = Post;
 exports.validate = validatePost
