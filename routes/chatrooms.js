@@ -57,8 +57,7 @@ router.put('/:id', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const chatroom = await Chatroom.findByIdAndUpdate(req.params.id,
-        req.body, { new: true });
+    const chatroom = await Chatroom.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
     if (!chatroom) return res.status(404).send('The chatroom with the given ID was not found.');
 

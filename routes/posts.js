@@ -34,7 +34,6 @@ router.get('/followed', async (req, res) => {
   .populate('repost', 'author content date')
   .populate('comments')
 
-  console.log(posts)
   if (!posts) return res.status(404).send('The post with the given ID was not found.');
 
   res.send(posts);
@@ -83,8 +82,7 @@ router.put('/:id', async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const post = await Post.findByIdAndUpdate(req.params.id,
-    req.body, { new: true });
+  const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
   if (!post) return res.status(404).send('The post with the given ID was not found.');
 

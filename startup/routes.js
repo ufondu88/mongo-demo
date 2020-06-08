@@ -7,6 +7,7 @@ module.exports = function (app) {
     const chatrooms = require('../routes/chatrooms');
     const messages = require('../routes/messages');
     const auth = require('../routes/auth');
+    const comments = require('../routes/comments');
 
     app.use(cors()) // Use this after the variable declaration
     app.use(express.json());
@@ -16,4 +17,5 @@ module.exports = function (app) {
     app.use('/api/chatrooms', chatrooms);
     app.use('/api/messages', messages);
     app.use('/api/auth', auth);
+    app.use('/api/comments', comments);
 }

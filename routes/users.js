@@ -100,8 +100,7 @@ router.post('/', async (req, res) => {
 
 //update the currently logged in user
 router.put('/me', auth, async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.body._id,
-        req.body, { new: true });
+    const user = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
 
     if (!user) return res.status(404).send('The user with the given ID was not found.');
 
@@ -110,8 +109,7 @@ router.put('/me', auth, async (req, res) => {
 
 //update a specific user
 router.put('/:id', auth, upload.single('profilePicture'), async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.body._id,
-        req.body, { new: true });
+    const user = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
 
     if (!user) return res.status(404).send('The user with the given ID was not found.');
 
