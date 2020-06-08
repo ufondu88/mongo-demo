@@ -19,5 +19,22 @@ function validateComment(comment) {
     return Joi.validate(comment, schema, { allowUnknown: true });
 }
 
+async function addComment(comment){
+    
+    newObj = {}
+    newObj.date = comment.date
+    newObj.likes = comment.likes
+    newObj.dislikes = comment.dislikes
+    newObj.author = comment.author
+    newObj.comment = comment.comment
+
+    let obj = new Comment(newObj);
+
+    obj.save(function (err, comment){
+        if (err) return console.error(err)
+    });
+}
+
 exports.Comment = Comment;
 exports.validate = validateComment;
+exports.addComment = addComment;

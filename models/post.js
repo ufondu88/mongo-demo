@@ -47,8 +47,13 @@ async function updatePost(){
 }
 
 async function getComments(){
-    comments = await Post.find().select('comments')
-    console.log(comments)
+    comments = await Post.find({ comments: { $not:{ $size:0 } } }).select('comments').then(comments => {
+        for (let post of comments) {
+            for(let comment of post.comments){
+                //addComment(comment)
+            }
+        }
+    })
 }
 
 //getComments();
