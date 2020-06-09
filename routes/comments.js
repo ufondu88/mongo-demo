@@ -6,58 +6,19 @@ const router = express.Router();
 //get all comments
 router.get('/', async (req, res) => {
   const comments = await Comment.find()
-    .populate('author', '-password')
-    .populate('likes', '-password')
-    .populate('dislikes', '-password')
+                                .populate('author', '-password')
+                                .populate('likes', '-password')
+                                .populate('dislikes', '-password')
   res.json(comments);
 });
 
-//get comments by specific author
-router.get('/author', async (req, res) => {
-  const comment = await Comment.find({ author: req.query.author })
-    .sort({ date: -1 })
-    .populate('author', '-password')
-    .populate('likes', '-password')
-    .populate('dislikes', '-password')
-
-  if (!comment) return res.status(404).json('The comment with the given ID was not found.');
-
-  res.json(comment);
-});
-
-//get comments by followed authors
-router.get('/followed', async (req, res) => {
-  const comments = await Comment.find({ author: { $in: req.query.following } })
-    .sort({ date: -1 })
-    .populate('author', '-password')
-    .populate('likes', '-password')
-    .populate('dislikes', '-password')
-
-  if (!comments) return res.status(404).json('The comment with the given ID was not found.');
-
-  res.json(comments);
-});
-
-//get all favorite comments
-router.get('/favorites', async (req, res) => {
-  const comments = await Comment.find({ _id: { $in: req.query.favorites } })
-    .sort({ date: -1 })
-    .populate('author', '-password')
-    .populate('likes', '-password')
-    .populate('dislikes', '-password')
-
-  if (!comments) return res.status(404).json('The comment with the given ID was not found.');
-
-  res.json(comments);
-});
-
-//get comments by ID
+//get comment by ID
 router.get('/:id', async (req, res) => {
-  const comment = await Comment.find({ _id: req.params.id })
-    .sort({ date: -1 })
-    .populate('author', '-password')
-    .populate('likes', '-password')
-    .populate('dislikes', '-password')
+  const comment = await Comment.find({ _id: req.query.id })
+                                .sort({ date: -1 })
+                                .populate('author', '-password')
+                                .populate('likes')
+                                .populate('dislikes')
 
   if (!comment) return res.status(404).json('The comment with the given ID was not found.');
 
