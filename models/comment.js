@@ -3,7 +3,7 @@ const Joi = require('joi');
 
 commentSchema =  new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
-    comment: { type: String, minlength: 1 },
+    comment: { type: String, minlength: 1, required: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users'}],
     dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     date: { type: Date, default: Date.now, required: true },
