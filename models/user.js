@@ -21,7 +21,7 @@ userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 3, maxlength: 1024 },
   firstName: { type: String, required: true, minlength: 3, maxlength: 255 },
   lastName: { type: String, required: true, minlength: 3, maxlength: 255 },
-  description: { type: String, minlength: 3, maxlength: 100 },
+  description: { type: String, maxlength: 100 },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Posts" }],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
@@ -47,9 +47,8 @@ function validateUser(user) {
     password: Joi.string().min(3).max(255).required(),
     firstName: Joi.string().min(3).max(255).required(),
     lastName: Joi.string().min(3).max(255).required(),
-    description: Joi.string().min(3).max(100),
   };
-  return Joi.validate(user, schema);
+  return Joi.validate(user, schema, { allowUnknown: true });
 }
 
 async function updateUser() {
