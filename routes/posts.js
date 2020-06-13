@@ -9,7 +9,10 @@ router.get("/", async (req, res) => {
     .sort("name")
     .populate("author", "-password")
     .populate("repost", "author content date")
-    .populate("comments");
+    .populate("comments")
+    .populate("likes", "-password")
+    .populate("dislikes", "-password")
+    .populate("repostedBy");
   res.json(posts);
 });
 
@@ -19,7 +22,10 @@ router.get("/author", async (req, res) => {
     .sort({ date: -1 })
     .populate("author", "-password")
     .populate("repost", "author content date")
-    .populate("comments");
+    .populate("comments")
+    .populate("likes", "-password")
+    .populate("dislikes", "-password")
+    .populate("repostedBy");
 
   if (!post)
     return res.status(404).send("The post with the given ID was not found.");
@@ -33,7 +39,10 @@ router.get("/followed", async (req, res) => {
     .sort({ date: -1 })
     .populate("author", "-password")
     .populate("repost", "author content date")
-    .populate("comments");
+    .populate("comments")
+    .populate("likes", "-password")
+    .populate("dislikes", "-password")
+    .populate("repostedBy");
 
   if (!posts)
     return res.status(404).send("The post with the given ID was not found.");
@@ -47,7 +56,10 @@ router.get("/favorites", async (req, res) => {
     .sort({ date: -1 })
     .populate("author", "-password")
     .populate("repost", "author content date")
-    .populate("comments");
+    .populate("comments")
+    .populate("likes", "-password")
+    .populate("dislikes", "-password")
+    .populate("repostedBy");
 
   if (!posts)
     return res.status(404).send("The post with the given ID was not found.");
@@ -61,7 +73,10 @@ router.get("/:id", async (req, res) => {
     .sort({ date: -1 })
     .populate("author", "-password")
     .populate("repost", "author content date")
-    .populate("comments");
+    .populate("comments")
+    .populate("likes", "-password")
+    .populate("dislikes", "-password")
+    .populate("repostedBy");
 
   if (!post)
     return res.status(404).send("The post with the given ID was not found.");
