@@ -12,6 +12,20 @@ router.get("/", async (req, res) => {
   res.json(comments);
 });
 
+//get all comments by user
+router.get("/user", async (req, res) => {
+  const comment = await Comment.find({ author: req.query.userID })
+    .sort({ date: -1 })
+    .populate("author", "-password")
+    .populate("likes")
+    .populate("dislikes");
+
+  if (!comment)
+    return res.status(404).json("The comment with the given ID was not found.");
+
+  res.json(comment);
+});
+
 //get comment by ID
 router.get("/:id", async (req, res) => {
   const comment = await Comment.find({ _id: req.query.id })
