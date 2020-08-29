@@ -1,74 +1,72 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-const User = require('./user');
+const mongoose = require("mongoose");
+const Joi = require("joi");
 
-// const uri = "mongodb+srv://uzoufondu:&123Canon@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority";
-
-// mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-//         .then(() => console.log('connected to MongoDB database'))
-//         .catch(err => console.error('could not connect to MongoDB', err))
-
-const Post = mongoose.model('Posts', new mongoose.Schema({
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users',
-        required: true
+postSchema = new mongoose.Schema({
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
+  },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+  dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comments" }],
+  content: { type: String, required: true },
+  repost: { type: mongoose.Schema.Types.ObjectId, ref: "Posts", default: null },
+  date: { type: Date, default: Date.now, required: true },
+  repostedBy: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+      date: { type: Date, default: Date.now, required: true },
     },
-    likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
-    }],
-    dislikes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
-    }],
-    comments: [{
-        author: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Users'
-        },
-        comment:{
-            type: String,
-            minlength: 3
-        },
-    date: { type: Date, default: Date.now, required: true },
-    }],
-    content: { type: String, required: true },
-    date: { type: Date, default: Date.now, required: true },
-}));
+  ],
+});
+
+const Post = mongoose.model("Posts", postSchema);
 
 function validatePost(post) {
-    const schema = {
-        author: Joi.string().required(),
-        content: Joi.string().required()
+  const schema = {
+    author: Joi.string().required(),
+    content: Joi.string().required(),
+  };
+  return Joi.validate(post, schema, { allowUnknown: true });
+}
+
+async function createPost() {
+  const post = new Post({
+    author: "5ebb2ea9163d3972c35ebf75",
+    content: "Wooo! MEAN!!",
+  });
+
+  const result = await post.save();
+}
+
+async function updatePost() {
+  Post.update(
+    {},
+    {
+      repostedBy: [],
+    },
+    { multi: true },
+    (err, raw) => {
+      if (err) console.log(err);
+      console.log("The raw response from Mongo was ", raw);
     }
-    return Joi.validate(post, schema, {allowUnknown: true});
+  );
 }
 
-async function createPost(){
-    const post = new Post({
-        author: "5ebb2ea9163d3972c35ebf75",
-        content: "Wooo! MEAN!!",
-    })
-
-    const result = await post.save();
-    console.log(result);
-
+async function getComments() {
+  comments = await Post.find({ comments: { $not: { $size: 0 } } })
+    .select("comments")
+    .then((comments) => {
+      for (let post of comments) {
+        for (let comment of post.comments) {
+          //addComment(comment)
+        }
+      }
+    });
 }
 
-async function updatePost(){
-    Post.update(
-        {}, 
-        { 
-            comments: []
-        }, 
-        { multi: true },  (err, raw) => {
-        if (err) return handleError(err);
-        console.log('The raw response from Mongo was ', raw);
-      });
-}
-
-//updatePost();
+//getComments();
 
 exports.Post = Post;
-exports.validate = validatePost
+exports.validate = validatePost;
