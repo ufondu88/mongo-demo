@@ -59,7 +59,7 @@ router.get("/user", auth, async (req, res) => {
     .populate("chatrooms")
     .populate("posts");
 
-  if (!user) return res.status(400).json("User does not exist");
+  if (!user) return res.status(400).json("User does not exist 😢");
 
   res.json(user);
 });
@@ -74,7 +74,7 @@ router.get("/id", auth, async (req, res) => {
     .populate("chatrooms")
     .populate("posts");
 
-  if (!user) return res.status(400).json("User does not exist");
+  if (!user) return res.status(400).json("User does not exist 😢");
 
   res.json(user);
 });
@@ -85,7 +85,7 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("User already exists");
+  if (user) return res.status(400).send("User already exists 😑");
 
   user = new User(req.body);
 
