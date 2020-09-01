@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+require('dotenv').config();
 
 module.exports = function () {
   const uri =
-    "mongodb+srv://uzoufondu:123Mongodb@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority";
+    `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority`;
 
   mongoose
     .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
