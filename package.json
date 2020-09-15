@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm install && node server.js"
+    "start": "npm install node-pre-gyp && npm install bcrypt && npm install && node server.js"
   },
   "keywords": [],
   "author": "",
