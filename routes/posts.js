@@ -69,7 +69,7 @@ router.get("/favorites", async (req, res) => {
 
 //get posts by ID
 router.get("/:id", async (req, res) => {
-  const post = await Post.find({ _id: req.params.id })
+  const post = await Post.findById(req.params.id)
     .sort({ date: -1 })
     .populate("author", "-password")
     .populate("repost", "author content date")
