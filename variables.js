@@ -10,3 +10,4 @@ if (devEnvironment) {
 }
 
 exports.port = port;
+exports.dbURL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@mycluster-se2sm.mongodb.net/test?retryWrites=true&w=majority`;
