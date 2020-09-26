@@ -65,8 +65,8 @@ router.get("/user", auth, async (req, res) => {
 });
 
 //get a specific user by ID
-router.get("/id", auth, async (req, res) => {
-  const user = await User.findOne({ _id: req.query.id })
+router.get("/:id", auth, async (req, res) => {
+  const user = await User.findOne({ _id: req.params.id })
     .select("-password")
     .populate("followers", "-password")
     .populate("following", "-password")

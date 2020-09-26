@@ -4,14 +4,15 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "push": "git push && docker build -t ufondu88/synapse . && docker push ufondu88/synapse",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm install node-pre-gyp && npm install bcrypt && npm install && node server.js"
+    "start": "npm install && node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcrypt-nodejs": "0.0.3",
     "config": "^3.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
