@@ -1,0 +1,20 @@
+version: '3'
+services:
+    app:
+        container_name: synapse
+        restart: always
+        build: .
+        ports:
+            - '3000:3000'
+    chat:
+        container_name: chat-service
+        image: ufondu88/chat-service
+        ports:
+            - '5000:5000'
+            - '4000:4000'
+    profile:
+        container_name: profile-service
+        image: ufondu88/profile-service
+        ports:
+            - '5100:5100'
+            - '4100:4100'
