@@ -5,8 +5,6 @@ module.exports = function () {
   mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
       console.log(`connected to MongoDB database`)
-
-      listenForSocketConnection();
     })
     .catch(err => console.error("could not connect to MongoDB", err));
 };
