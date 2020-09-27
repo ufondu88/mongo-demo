@@ -50,8 +50,8 @@ router.get("/me", auth, async (req, res) => {
 });
 
 //get a specific user by username
-router.get("/user", auth, async (req, res) => {
-  const user = await User.findOne({ username: req.query.username })
+router.get("/username/:username", auth, async (req, res) => {
+  const user = await User.findOne({ username: req.params.username })
     .select("-password")
     .populate("followers", "-password")
     .populate("following", "-password")
@@ -65,7 +65,7 @@ router.get("/user", auth, async (req, res) => {
 });
 
 //get a specific user by ID
-router.get("/:id", auth, async (req, res) => {
+router.get("/id/:id", auth, async (req, res) => {
   const user = await User.findOne({ _id: req.params.id })
     .select("-password")
     .populate("followers", "-password")
