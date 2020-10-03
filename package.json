@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "compose": "docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker-compose up",
     "push": "git push && sudo docker build -t ufondu88/synapse . && sudo docker push ufondu88/synapse",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
