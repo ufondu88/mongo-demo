@@ -18,3 +18,9 @@ services:
         ports:
             - '5100:5100'
             - '4100:4100'
+    notification:
+        container_name: notification-service
+        image: ufondu88/synapse-notification-service
+        ports:
+            - '4200:4200'
+            - '5200:5200'
